@@ -34,6 +34,8 @@ String::tokens = ->
   STRING = /('(\\.|[^'])*'|"(\\.|[^"])*")/g
   ONELINECOMMENT = /\/\/.*/g
   COMPARISON = /[<>=!]=|[<>]/g
+  ADDOP = /[+-]/g
+  MULTOP = /[\*\/]/g
   MULTIPLELINECOMMENT = /\/[*](.|\n)*?[*]\//g
   ONECHAROPERATORS = /([-+*\/=()&|;:,<>{}[\]])/g
   tokens = [
@@ -43,6 +45,8 @@ String::tokens = ->
     STRING
     ONELINECOMMENT
     COMPARISON
+    ADDOP
+    MULTOP
     MULTIPLELINECOMMENT
     ONECHAROPERATORS
   ]
@@ -50,6 +54,8 @@ String::tokens = ->
     p: "P"
     if: "IF"
     then: "THEN"
+    while: "WHILE"
+    do: "DO"
   
   # Make a token object.
   make = (type, value) ->
@@ -96,6 +102,18 @@ String::tokens = ->
         result.push make("NUM", n)
       else
         make("NUM", m[0]).error "Bad number"
+        
+    # comparison operator.
+    else if m = COMPARISON.bexec(this)
+      result.push make("COMPARISON", getTok())
+      
+    # add operator.
+    else if m = ADDOP.bexec(this)
+      result.push make("ADDOP", getTok())
+      
+    # mult operator.
+    else if m = MULTOP.bexec(this)
+      result.push make("MULTOP", getTok())    
     
     # string
     else if m = STRING.bexec(this)
@@ -158,6 +176,15 @@ parse = (input) ->
         type: "IF"
         left: left
         right: right
+    else if lookahead and lookahead.type is "WHILE"
+      match "WHILE"
+      left = condition()
+      match "DO"
+      right = statement()
+      result = 
+        type: "WHILE"
+        left: left
+        right: right
     else # Error!
       throw "Syntax Error. Expected identifier but found " + 
         (if lookahead then lookahead.value else "end of input") + 
@@ -166,31 +193,34 @@ parse = (input) ->
     
   condition = ->
     left = expression()
+    type = lookahead.value
     match "COMPARISON"
     right = expression()
     result = 
-      type: value
+      type: type
       left: left
       right: right
 
   expression = ->
     result = term()
-    if lookahead and lookahead.type is "+"
-      match "+"
-      right = expression()
+    while lookahead and lookahead.type is "ADDOP"
+      type = lookahead.value
+      match "ADDOP"
+      right = term()
       result =
-        type: "+"
+        type: type
         left: result
         right: right
     result
 
   term = ->
     result = factor()
-    if lookahead and lookahead.type is "*"
-      match "*"
+    while lookahead and lookahead.type is "MULTOP"
+      type = lookahead.value
+      match "MULTOP"
       right = term()
       result =
-        type: "*"
+        type: type
         left: result
         right: right
     result
