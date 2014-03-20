@@ -1,0 +1,21 @@
+doctype html
+html
+  head
+    title Mocha
+    meta content=("text/html; charset=UTF-8") http-equiv="Content-Type" 
+      meta content="width=device-width, initial-scale=1.0" name="viewport" 
+        link href="test/mocha.css" rel="stylesheet" /
+  body
+    #mocha
+    textarea#original
+    span#converted.output
+    script src="test/chai.js" 
+    script src="test/mocha.js"
+    script src="javascripts/main.js"
+    javascript:
+      mocha.setup('tdd')
+    script src="test/tests.js" type="text/javascript" 
+    javascript:
+      mocha.run();
+        
+    input#PARSE.mylink[value="parse" type="button"]

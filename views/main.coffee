@@ -7,6 +7,8 @@ main = ()->
 
   OUTPUT.innerHTML = result
 
+window.main = main
+
 window.onload = ()-> 
   PARSE.onclick = main
 
@@ -125,7 +127,7 @@ String::tokens = ->
       result.push make(m[0], getTok())
     else
       throw "Syntax error near '#{@substr(i)}'"
-  result
+   result
 
 parse = (input) ->
   tokens = input.tokens()
@@ -255,3 +257,5 @@ parse = (input) ->
       "Expected 'end of input' and found '" + 
       input.substr(lookahead.from) + "'"  
   tree
+
+window.parse = parse
