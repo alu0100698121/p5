@@ -4,19 +4,29 @@ $white: #fff;
 $blue: #002EB8;
 $main-font: Helvetica, Arial, sans-serif;
 
+html {
+
+  background-color: grey;
+}
+
 body {
   font-family: $main-font;
 }
 
 h1 {
-  color: $red;
+  color: $white;
   font: 32px/1 $main-font;
+}
+
+header {
+  background: url(images/background.jpg);
+  background-size: 100%
 }
 
 header h1 {
   font-size: 40px;
   line-height: 80px;
-  background: transparent url(/images/logo.png) 0 0 no-repeat;
+  background: transparent url(/images/logo.jpg) 0 0 no-repeat;
   background-size:5% 70%;
   padding-left: 84px;
 }
@@ -51,7 +61,20 @@ nav {
 
 p {
   font: 13px/1.4 $main-font;
+  text-align: center
 }
+
+#original {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#OUTPUT {
+
+  color: $white;
+}
+
 
 label {
   display: block;
@@ -84,7 +107,15 @@ nav a.current {
   }
 }
 
+.mylink {
+
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .loadfile {
+ 
   background-color: $black;
   border-radius: 5px;
   border: 2px solid #DDD;
