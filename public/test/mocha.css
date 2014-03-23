@@ -253,6 +253,11 @@ body {
   height: 40px;
 }
 
+#mocha code {
+  display: block;
+  background: white;
+}
+
 #mocha code .comment { color: #ddd; }
 #mocha code .init { color: #2f6fad; }
 #mocha code .string { color: #5890ad; }
